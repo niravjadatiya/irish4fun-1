@@ -7,18 +7,22 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 
 
+
 // Connect to Database
-mongoose.connect(config.database,{ useNewUrlParser: true });
+// mongoose.connect(config.database,{ useNewUrlParser: true });
+mongoose.connect(config.mongoURI)
+  .then(() => console.log("MongoDB Connected..."))
+  .catch(err => console.log(err));
 
 // On Connection
-mongoose.connection.on('connected', () => {
-  console.log('Connected to database ' + config.database);
-});
+//mongoose.connection.on('connected', () => {
+ // console.log('Connected to database ' + config.database);
+///});
 
 // On Error
-mongoose.connection.on('error', (err) => {
-  console.log('Database error: ' + err);
-});
+//mongoose.connection.on('error', (err) => {
+//  console.log('Database error: ' + err);
+//});
 
 const app = express();
 
@@ -27,7 +31,7 @@ const users = require('./routes/users');
 const puzzleRoutes = require('./routes/puzzles');
 
 // Port Number
-const port = 9898;
+const port = process.env.port || 9898;
 
 // CORS Middleware
 app.use(cors());
